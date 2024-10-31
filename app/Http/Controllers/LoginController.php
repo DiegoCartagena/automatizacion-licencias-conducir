@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Login;
+use App\Providers\RouteServiceProvider;
+//use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreLoginRequest;
 use App\Http\Requests\UpdateLoginRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
+    public function __construct()
+    {
+     
+    
+    }
     /**
      * Display a listing of the resource.
      */
@@ -35,9 +46,16 @@ class LoginController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Login $login)
+    public function show()
     {
-        //
+        $user = User::create([
+            'name' => 'admin',
+            'email' => 'a@b.cl',
+            'password' => Hash::make('admin'),
+        ]);
+        $val = Auth::Login($user);
+        //return response()->json(['res'=> true,'data'=>$user,'val'=>$val]);
+        return redirect('/');
     }
 
     /**
