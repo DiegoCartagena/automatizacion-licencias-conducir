@@ -16,8 +16,11 @@ import AppLayout from '@/Layouts/AppLayout.vue';
         </template>
         <div class="container">
                 <br>
-                <Button class="btn">Click Me!</Button>
-                <br>
+                <button class="bg-blue-500 hover:bg-blue-300 text-white font-bold py-1 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded float-top">
+                 Buscar
+                </button>
+            
+                <input type="search" class="form-input rounded-full px-4 py-1 float-right">
                 <div class="relative overflow-x-auto">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

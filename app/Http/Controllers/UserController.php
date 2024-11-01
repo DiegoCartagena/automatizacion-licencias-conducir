@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all()->paginate(50);
+        $user = User::all();
         return response()->json(['res'=>true, 'usuarios'=>$user]);
     }
 
@@ -47,9 +47,20 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        
+        try {
+            $user = User::where('id',$request->id)->first();
+        return response()->json([
+            "Estado"=>"Ok",
+            "Mensaje"=>"Exitoso",
+            "Usuario" => $user
+     ]);
+            
+        } catch (\Exception $e) {
+            var_dump('Error al editar usuario');die($e);
+        }
+
     }
 
     /**
@@ -87,8 +98,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $user = User::find(strval($request->id));
+            $user->delete();
+        return response()->json([
+            "Estado"=>"Ok",
+            "Mensaje"=>"Usuario eliminado con exito",
+            "Usuario" => $user
+     ]);
+            
+        } catch (\Exception $e) {
+            var_dump('Error al editar usuario');die($e);
+        }
     }
 }
