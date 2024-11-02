@@ -14,7 +14,13 @@ class UserController extends Controller
     public function index()
     {
         $user = User::all();
-        return response()->json(['res'=>true, 'usuarios'=>$user]);
+        if(count($user)>0)
+        {
+
+            return response()->json(['res'=>true, 'usuarios'=>$user]);
+        }else{
+            return response()->json(['res'=>false]);
+        }
     }
 
     /**
@@ -29,8 +35,20 @@ class UserController extends Controller
             $user['name'] = $data['name'];
             $user['email'] = $data['email'];
             $user['password'] = Hash::make($data['password']);
+            $user['rut'] = $data['rut'];
+            $user['telefono'] = $data['telefono'];
+            $user['aPaterno'] = $data['aPaterno'];
+            $user['aMaterno'] = $data['aMaterno'];
+            $user['fechaNacimiento'] = date('Y-m-d', strtotime($data['fechaNacimiento']));
+            
             $res = User::create($user);
-            return response()->json(['res'=>true, 'usuario'=>$res ]);
+        if($res)
+        {
+            return response()->json(['res'=>true, 'usuario'=>$res]);
+        }else{
+            return response()->json(['res'=>false]);
+        }
+            
         } catch (\Exception $e) {
             var_dump('Error al crear usuario');die($e);
         }
@@ -51,11 +69,11 @@ class UserController extends Controller
     {
         try {
             $user = User::where('id',$request->id)->first();
-        return response()->json([
-            "Estado"=>"Ok",
-            "Mensaje"=>"Exitoso",
-            "Usuario" => $user
-     ]);
+        if($user){
+            return response()->json(['res'=>true, 'usuario'=>$user]);
+        }else{
+            return response()->json(['res'=>false,'usuario'=>'no existe el usuario con el id: '.$request->id]);
+        }
             
         } catch (\Exception $e) {
             var_dump('Error al editar usuario');die($e);
@@ -87,7 +105,6 @@ class UserController extends Controller
                }if(isset($data['password'])){
                 $user->password = Hash::create($data['password']);
                }
-
             $user->save();
             return response()->json(['res'=>true, 'usuario'=>$user]);
         } catch (\Exception $e) {
@@ -100,14 +117,16 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+       
         try {
-            $user = User::find(strval($request->id));
+            $user = User::find($request->id);
+            if($user)
+            {
             $user->delete();
-        return response()->json([
-            "Estado"=>"Ok",
-            "Mensaje"=>"Usuario eliminado con exito",
-            "Usuario" => $user
-     ]);
+            return response()->json(['res'=>true, 'usuario'=>$user]);
+        }else{
+            return response()->json(['res'=>false,'mensaje'=>'El usuario ya fue eliminado anteriormente']);
+        }
             
         } catch (\Exception $e) {
             var_dump('Error al editar usuario');die($e);
