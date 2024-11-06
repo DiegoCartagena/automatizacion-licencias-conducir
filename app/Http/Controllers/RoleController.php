@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Roles;
 use Inertia\Response;
 
 class RoleController extends Controller
@@ -13,8 +13,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $user = User::paginate(25);
-        return inertia('Roles/Index',['datos' => $user]);
+        $roles = Roles::paginate(25);
+        return inertia('Roles/Index',['datos' => $roles]);
     }
 
     /**

@@ -33,29 +33,22 @@ const submit = () => {
     <Head title="Log in" />
 
     <AuthenticationCard style="background-color:#2a3b47;">
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+      <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
         </div>
-
-    <div >
+      <div class="login-container">
+      <div class="login-card">
+        <h2>Inicio de Sesión</h2>
         <form @submit.prevent="submit">
-            <div class="login-card">
-                <h2>Inicio de Sesión</h2>
           <div class="input-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Email" v-model="form.email" />
+            <label for="rut">Email:</label>
+            <input type="text" id="rut" placeholder="Email" v-model="form.email" autocomplete="email"/>
           </div>
           <div class="input-group">
             <label for="password">Contraseña:</label>
             <input type="password" id="password" placeholder="Contraseña" v-model="form.password" />
           </div>
-          
-          
-          
+          <PrimaryButton type="submit" class="btn-primary justify-center"  :disabled="form.processing">Iniciar Sesión</PrimaryButton>
           <div class="block mt-4">
               <label class="flex items-center">
                   <Checkbox v-model:checked="form.remember" name="remember" />
@@ -63,18 +56,18 @@ const submit = () => {
                 </label>
             </div>
             
-            <div class="flex items-center justify-end mt-4">
-                <Link v-if="canResetPassword" :href="route('password.request')" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Forgot your password?
-                </Link>
-                
-                
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </div>
         </form>
+
+        <div class="links">
+          <p>¿Aún no estás registrado? <a href="/register">Regístrate aquí</a></p>
+          <p>¿Olvidaste tu contraseña? <Link v-if="canResetPassword" :href="route('password.request')">
+            Haz click aquí
+                </Link></p>
+        </div>
+        <div class="support">
+          <p>¿Aún tienes problemas con tu registro u otro sistema? Envía un correo a <a href="mailto:registro@laflorida.cl">registro@laflorida.cl</a></p>
+        </div>
+      </div>
     </div>
     </AuthenticationCard>
 </template>

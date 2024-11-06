@@ -9,7 +9,7 @@ use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\DocumentosController;
 
 //user routes
-Route::get('/users',[UserController::class,'index']);
+Route::get('/users',[UserController::class,'listar']);
 Route::post('/create-user',[UserController::class,'create']);
 Route::post('/update-user',[UserController::class,'update']);
 Route::post('/find-user',[UserController::class,'show']);
