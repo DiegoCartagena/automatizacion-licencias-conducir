@@ -14,7 +14,7 @@ const logout = () => {
         <!-- Encabezado -->
 
         <div class="flex justify-end bg-gray-800 text-white items-center w-full px-10 ">
-            <img src="/assets/logo-florida.svg" alt="Logo La Florida" class="w-24">
+            <img src="/images/logo-florida.svg" alt="Logo La Florida" class="w-32 h-auto">
             <div class="text-white text-xl font-semibold float-rigth">
                 {{ new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
             </div>

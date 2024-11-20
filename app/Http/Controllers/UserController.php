@@ -25,10 +25,10 @@ class UserController extends Controller
 
                     $user->rol = Roles::where('id', $rols->role_id)->first();
                 }
-                $user->licencias = Licencias::where('id_usuario',$user->id)->all();
-                 
+                $user->licencias = Licencias::where('id_usuario',$user->id)->get();
             }
-            return inertia('Users/Index', ['usuarios' => $users]);
+            $roles = Roles::all();
+            return inertia('Users/Index', ['usuarios' => $users , 'roles'=>$roles]);
         } else {
             return response()->json(['res' => false]);
         }
@@ -44,6 +44,7 @@ class UserController extends Controller
 
                     $user->rol = Roles::where('id', $rols->role_id)->first();
                 }
+                $user->licencias = Licencias::where('id_usuario',$user->id)->get();
                 // var_dump($user->rol);die;
             }
             return response()->json(['res' => true, 'usuarios' => $users]);

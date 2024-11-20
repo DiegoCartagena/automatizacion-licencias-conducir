@@ -40,8 +40,20 @@ class DashboardController extends Controller
     public function calendar(){
         return Inertia::render('Calendar');
     }
+    public function reportes(){
+        return Inertia::render('Reportes/Index');
+    }
 
     public function dashboard () {
         return Inertia::render('Dashboard');
+    }
+    public function formularioSalud () {
+        return Inertia::render('FormularioSalud');
+    }
+    public function documentos () {
+        return Inertia::render('CargaDocumentos');
+    }
+    public function finalizado () {
+        return Inertia::render('FinalizacionProceso');
     }
 }

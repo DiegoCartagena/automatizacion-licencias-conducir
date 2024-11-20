@@ -7,6 +7,7 @@ use App\Http\Controllers\TransbankController;
 use App\Http\Controllers\LicenciasController;
 use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\DocumentosController;
+use App\Http\Controllers\RoleController;
 
 //user routes
 Route::get('/users',[UserController::class,'listar']);
@@ -35,6 +36,12 @@ Route::delete('/delete-tramite',[TipoTramiteController::class,'destroy']);
 //documentos
 Route::get('/get-documentos',[DocumentosController::class,'listar']);
 Route::post('/create-documento',[DocumentosController::class,'create']);
+Route::post('/editar-documento',[DocumentosController::class,'edit']);
+Route::delete('/delete-documento',[DocumentosController::class,'destroy']);
+
+//roles
+Route::get('/get-roles',[RoleController::class,'listar']);
+Route::post('/create-rol',[RoleController::class,'create']);
 Route::post('/editar-documento',[DocumentosController::class,'edit']);
 Route::delete('/delete-documento',[DocumentosController::class,'destroy']);
 

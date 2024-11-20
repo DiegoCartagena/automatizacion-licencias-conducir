@@ -25,7 +25,7 @@ export default {
 
             <div class="form-group float-right rounded-full">
                 <input type="search" placeholder="Buscar..."
-                    class="form-input bg-gray-200 text-white-500 rounded-full px-10 py-1 float-right mr-8 bottom-2">
+                    class="form-input bg-gray-200 text-white-500 rounded-full px-10 py-1 float-right mr-8 bottom-2" v-model="filter">
                 <button
                     class="bg-gray-500 hover:bg-gray-300 text-white font-bold py-2 px- border-b-4 border-gray-700 hover:border-gray-500 rounded-xl float-right ">
                     <svg class="w-[15px] h-[15px] text-gray-800 dark:text-white" aria-hidden="true"
@@ -38,7 +38,7 @@ export default {
             <div class="relative overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-black-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
+                        <tr class="text-center" >
                             <th scope="col" class="px-6 py-3">
                                 ID
                             </th>
@@ -63,40 +63,49 @@ export default {
                             <th scope="col" class="px-6 py-3">
                                 Telefono
                             </th>
+                            <th scope="col" class="px-6 py-3" >
+                                Acciones
+                            </th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <template v-for="user in $page.props.usuarios" :key="user.id">
+                        <template v-for="user in filterUsuarios" :key="user.id">
 
-                            <tr @click="editar(user)" class="bg-gray-50 border-b hover:bg-gray-200  ">
-                                <th scope="row"
+                            <tr  class="bg-gray-50 border-b hover:bg-gray-200 text-center ">
+                                <th @click="editar(user)" scope="row"
                                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {{ user.id }}
                                 </th>
-                                <td class="px-6 py-4">
+                                <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.rut }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.name }}
                                 </td>
-                                <td class="px-1 text-center  rounded-lg h-[24px] "
-                                    :class="user.rol ? user.rol.name == 'admin' ? 'hover:bg-yellow-500' : 'hover:bg-green-400' : 'hover:bg-gray-400'">
+                                <td @click="editar(user)" class="px-1 text-center "
+                                    >
                                     {{ user.rol ? user.rol.name : '' }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.aPaterno }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.aMaterno }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.email }}
                                 </td>
-                                <td>
+                                <td @click="editar(user)" >
                                     {{ user.telefono }}
                                 </td>
-
+                                <td class="text-center justify-center">
+                                <Button @click="eliminar(user)" class=" bg-red-400 w-[30px] h-[30px] text-center">
+                                    <svg class="  text-black text-center  "  tool-tip="eliminar" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"  fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
+                                    </svg>
+                                </Button>    
+                                </td>
                             </tr>
                         </template>
                     </tbody>
@@ -106,9 +115,9 @@ export default {
 
         <template v-if="mostrar" :user="usuario">
             <div class="fixed inset-0  flex items-center justify-center bg-gray-900 bg-opacity-50 ">
-                <div class="bg-white rounded-xl p-6 max-w-2xl w-full  shadow-2xl max-h-[800px] overflow-y-auto">
+                <div class="bg-white rounded-xl p-6 max-w-2xl w-full  shadow-2xl max-h-[750px] overflow-y-auto">
                     <!-- Título del modal -->
-                    <h4>Editar Usuario</h4>
+                    <h2 class="text-center" >Editar Usuario</h2>
 
                     <div class=" bg-red-400 rounded-lg text-center  w-[24px] h-[24px] float-right"
                         @click="mostrarModal">X</div>
@@ -371,11 +380,11 @@ export default {
                                                 d="M5.47925 4.4834V19.417m1.9917-14.9336V19.417M21.4129 4.4834V19.417M13.4461 4.4834V19.417" />
                                         </svg>
                                     </span>
-                                    <select v-model="usuario.rol.name"
+                                    <select v-model="usuario.rol.name" 
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="admin">admin</option>
-                                        <option value="municipal">municipal</option>
+                                        
+                                        <option v-for="rol in $page.props.roles" :key="rol.id" value="{{rol.name}}">{{ rol.name }}</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -530,10 +539,10 @@ export default {
         <!--Modal Crear-->
         <template v-if="mostrarCrear">
             <div class="fixed inset-0  flex items-center justify-center bg-gray-900 bg-opacity-50 ">
-                <div class="bg-white rounded-xl p-6 max-w-2xl w-full  shadow-2xl max-h-[800px] overflow-y-auto">
+                <div class="bg-white rounded-xl p-6 max-w-2xl w-full  shadow-2xl max-h-[750px] overflow-y-auto">
                     <!-- Título del modal -->
-                    <h4>Crear Usuario</h4> <span>
-
+                    <h3 class="text-center">Crear Usuario</h3> 
+                    <span>
                         <div class=" bg-red-400 rounded-lg text-center  w-[24px] h-[24px] float-right"
                             @click="openCreate">X</div>
                     </span>
@@ -973,8 +982,8 @@ export default {
 </template>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref } from 'vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 const mostrar = ref(false);
 const mostrarCrear = ref(false);
@@ -996,7 +1005,23 @@ const form = useForm({
     rol_name:''
 
 });
-const usuarios = Inertia.props;
+const page = usePage();
+const filter = ref("");
+const filterUsuarios = computed(() => {
+    if(filter.value){
+
+        const sol = page.props.usuarios.filter((usuario) =>
+            usuario.name.includes(filter.value) ||
+            usuario.rut.includes(filter.value.toLowerCase()) ||
+            usuario.id.toString().includes(filter.value)
+        );
+        return sol;
+    }else{
+        return page.props.usuarios;
+    }
+    
+});
+
 const mostrarModal = () => {
     mostrar.value = !mostrar.value;
 
@@ -1029,6 +1054,10 @@ const guardar = async (usuario) => {
     formdata.append('profesion', usuario.profesion);
     const res = await axios.post('/api/update-user', (formdata));
     console.log(res);
+}
+const eliminar = (user) => {
+    confirm('Seguro desea eliminar al usuario  '+user.name);
+    //console.table(user);
 }
 const editar = (user) => {
     mostrarModal()

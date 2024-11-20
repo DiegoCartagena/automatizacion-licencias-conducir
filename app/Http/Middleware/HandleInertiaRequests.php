@@ -39,7 +39,33 @@ class HandleInertiaRequests extends Middleware
             //
             'csrf_token' =>csrf_token(),
             'user.roles' => $request->user() ? $request->user()->roles->pluck('name'): [],
-            'user.permission' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name'): []
+            'user.permission' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name'): [],
+            'files' => array(
+                array(
+                    'id'=>1,
+                    'Nombre'=>'Cedula de identidad',
+                    'estado' => 'Pendiente',
+                    'archivo' => null
+                ),
+                array(
+                    'id'=>2,
+                    'Nombre'=>'Cedula de identidad reverso',
+                    'estado' => 'Pendiente',
+                    'archivo' => null
+                ),
+                array(
+                    'id'=>3,
+                    'Nombre'=>'Certificado de estudios',
+                    'estado' => 'Pendiente',
+                    'archivo' => null
+                ),
+                array(
+                    'id'=>1,
+                    'Nombre'=>'Certificado residencia',
+                    'estado' => 'Pendiente',
+                    'archivo' => null
+                )
+            )
         ]);
     }
 }

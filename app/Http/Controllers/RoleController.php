@@ -17,12 +17,29 @@ class RoleController extends Controller
         return inertia('Roles/Index',['datos' => $roles]);
     }
 
+    //listar 
+    public function listar()
+    {
+        $roles = Roles::all();
+        return response()->json(['res'=>true,'roles' => $roles]);
+    }
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = $request->all();
+        try {
+            $rol= array();
+            $rol['name']=$data['name'];
+            $rol['guard_name']='web';
+            $res = Roles::create($rol);
+            if($res){
+                return response()->json(['res'=>true,'ROL'=>$res]);
+            }
+        } catch (\Exception $e) {
+            var_dump('Error al crear rol');die($e);
+        }
     }
 
     /**

@@ -17,7 +17,7 @@
           <p><span class="font-semibold">Nombre Completo:</span> {{$page.props.auth.user.name.toUpperCase()+' '+ $page.props.auth.user.aPaterno.toUpperCase()+' '+ $page.props.auth.user.aMaterno.toUpperCase()}}</p>
           <p><span class="font-semibold">Domicilio:</span> {{$page.props.auth.user.calle+' '+$page.props.auth.user.numero}}</p>
           <p><span class="font-semibold">Teléfono:</span>{{$page.props.auth.user.telefono}}</p>
-          <p><span class="font-semibold">Comuna:</span> {{$page.props.auth.user.comuna.toUpperCase()}}</p>
+          <p><span class="font-semibold">Comuna:</span> {{$page.props.usuario.comuna.toUpperCase()}}</p>
         </div>
         <div class="bg-yellow-100 text-yellow-800 mt-4 p-3 rounded">
           <p>📅 Faltan <span class="font-bold">2 años 11 meses 14 días</span> para su próximo control. (Fecha control: 16-10-2027)</p>
@@ -126,7 +126,7 @@
 
       <!-- Botones de acción -->
       <div class="flex justify-center space-x-4">
-        <button @click="mostrarModal" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded flex-1">Aceptar Condiciones</button>
+        <button @click="step3" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded flex-1">Aceptar Condiciones</button>
         <button @click="mostrarModal" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded flex-1">Cancelar</button>
       </div>
     </div>

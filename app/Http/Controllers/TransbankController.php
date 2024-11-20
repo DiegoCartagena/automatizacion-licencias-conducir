@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pagos;
 use Transbank\Webpay\WebpayPlus;
 Use Transbank\Webpay\WebpayPlus\Transaction;
+use Inertia\Inertia;
 
 class TransbankController extends Controller
 {
@@ -81,9 +82,11 @@ class TransbankController extends Controller
             $pago->status = 2;
             $pago->update();
 
-            return redirect('/dashboard');
+            return Inertia::render('PagoAprobado',['pago'=>$pago]);
         }else {
-            return response()->json(['res'=>false]);
+            $pago->status = 3;
+            $pago->update();
+            return Inertia::render('PagoAprobado',['pago'=>$pago]);
         }
     }
 

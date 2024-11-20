@@ -37,7 +37,8 @@ class SolicitudesController extends Controller
      */
     public function create()
     {
-        //
+        //creacion de solicitud
+        
     }
 
     /**

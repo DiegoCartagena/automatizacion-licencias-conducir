@@ -7,15 +7,3 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
    <button v-if="$page.props.user.permission.includes('crear roles')" >Administrar roles</button>
    <button v-if="$page.props.user.roles.includes('admin')" >Administrar usuarios</button>
 </template>
-<style>
-button {
-    background-color: green;
-    color: white;
-    padding: 20px;
-    margin: 5px;
-}
-
-button:hover{
-    background-color: blue;
-}
-</style>
