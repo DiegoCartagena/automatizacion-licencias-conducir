@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use stdClass;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -45,27 +46,29 @@ class HandleInertiaRequests extends Middleware
                     'id'=>1,
                     'Nombre'=>'Cedula de identidad',
                     'estado' => 'Pendiente',
-                    'archivo' => null
+                
                 ),
                 array(
                     'id'=>2,
                     'Nombre'=>'Cedula de identidad reverso',
                     'estado' => 'Pendiente',
-                    'archivo' => null
+                    
                 ),
                 array(
                     'id'=>3,
                     'Nombre'=>'Certificado de estudios',
                     'estado' => 'Pendiente',
-                    'archivo' => null
+                    
                 ),
                 array(
                     'id'=>1,
                     'Nombre'=>'Certificado residencia',
                     'estado' => 'Pendiente',
-                    'archivo' => null
+                    
                 )
-            )
+                ),
+                'solicitud'=>new stdClass(),
         ]);
+
     }
 }

@@ -19,12 +19,12 @@ const logout = () => {
                 {{ new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }}
             </div>
         </div>
-        <div class="min-h-screen bg-gray-100 text-white flex items-center justify-center py-10">
+        <div class="min-h-screen  text-white flex items-center justify-center py-10" :class="$page.props.user.roles.includes('admin') ?'bg-gray-300' : 'bg-gray-800' ">
             <!-- Contenedor principal dividido en dos columnas -->
             <div class="flex w-full max-w-6xl space-x-6">
 
                 <!-- Columna izquierda: Perfil de usuario -->
-                <div class="bg-gray-300 text-black p-6 rounded-lg shadow-lg w-1/3">
+                <div class="bg-gray-300 text-black p-6 rounded-lg shadow-lg w-1/3" >
                     <h2 class="text-lg font-bold mb-4">Perfil de <span class="text-yellow-500">Administrador</span></h2>
                     <div class="flex flex-col items-center">
                         <div class="bg-gray-700 rounded-full w-24 h-24 flex items-center justify-center mb-4">

@@ -69,7 +69,7 @@
                     'bg-red-500 text-white': block.status === 'reservado',
                     'bg-green-500 text-white': block.status === 'disponible',
                   }"
-                @click="selectHora">
+                @click="selectHora(block.time)">
                   {{ block.time }}
                 </div>
               </div>
@@ -82,14 +82,18 @@
 </template>
 
 <script setup>
+import helper from '@/Helpers/Helper.js';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref, computed } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+import { ref, computed, onMounted } from 'vue';
 
 const currentMonth = ref(new Date().getMonth());
 const currentYear = ref(new Date().getFullYear());
 const calendarDays = ref([]);
 const selectedDay = ref(null);
 const timeBlocks = ref([]);
+const page = usePage();
+const id = ref(0);
 
 // Cambiar el mes
 const changeMonth = (increment) => {
@@ -147,16 +151,44 @@ const generateTimeBlocks = () => {
     }
   }
 };
+const convertirFecha = (input) => {
+  let day, month, year;
 
+  if (input instanceof Date) {
+    day = String(input.getDate()).padStart(2, '0');
+    month = String(input.getMonth() + 1).padStart(2, '0');
+    year = input.getFullYear();
+  } else if (typeof input === 'string') {
+    [day, month, year] = input.split('/');
+  } else {
+    throw new Error('Formato de fecha no válido');
+  }
+
+  return `${year}-${month}-${day}`;
+};
 const currentMonthLabel = computed(() => {
   const date = new Date(currentYear.value, currentMonth.value);
   return date.toLocaleString('es-ES', { month: 'long', year: 'numeric' });
 });
-const selectHora = () => {
-  window.location.href = ('/form-salud');
+const selectHora = async (hora) => {
+  console.log(selectedDay.value.date.toLocaleDateString('es-ES')+' '+hora);
+ const step = await axios.post('/api/edit-solicitud',{id:id.value,fecha_agendada: convertirFecha(selectedDay.value.date.toLocaleDateString('es-ES')),hora_agendada:hora});
+    if(step.data.res){
+      page.props.solicitud=step.data.solicitud;
+      window.location.href = ('/form-salud');
+    }
 }
 const selectedDayLabel = computed(() => {
   if (!selectedDay.value) return '';
   return selectedDay.value.date.toLocaleDateString('es-ES');
 });
+
+onMounted( async()=>{
+id.value = localStorage.getItem('id_solicitud');
+   const step = await axios.post('/api/edit-solicitud',{id:id.value,step:'seleccionando hora'});
+    if(step.data.res){
+      page.props.solicitud=step.data.solicitud;
+      console.log(page.props);
+    }
+})
 </script>

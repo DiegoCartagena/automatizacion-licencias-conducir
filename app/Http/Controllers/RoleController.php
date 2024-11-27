@@ -77,8 +77,12 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        if($request->id){
+            $rol=Roles::where('id',$request->id)->first();
+            $res = $rol->delete();
+            return response()->json(['res'=>true,'rol'=>$rol]);
+        }
     }
 }

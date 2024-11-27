@@ -35,6 +35,17 @@ class User extends Authenticatable
         'rut',
         'fechaNacimiento',
         'telefono',
+        'estadoCivil',
+        'sexo',
+        'nacionalidad',
+        'profesion',
+        'region',
+        'comuna',
+        'calle',
+        'numero',
+        'block_torre',
+        'dpto_casa_local',
+        'referencia'
     ];
 
     /**

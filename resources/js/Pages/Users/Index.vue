@@ -78,7 +78,7 @@ export default {
                                     {{ user.id }}
                                 </th>
                                 <td @click="editar(user)" class="px-6 py-4">
-                                    {{ user.rut }}
+                                    {{ formatRut(user.rut) }}
                                 </td>
                                 <td @click="editar(user)" class="px-6 py-4">
                                     {{ user.name }}
@@ -380,10 +380,10 @@ export default {
                                                 d="M5.47925 4.4834V19.417m1.9917-14.9336V19.417M21.4129 4.4834V19.417M13.4461 4.4834V19.417" />
                                         </svg>
                                     </span>
-                                    <select v-model="usuario.rol.name" 
+                                    <select v-model="usuario.rol.name" disabled
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         
-                                        <option v-for="rol in $page.props.roles" :key="rol.id" value="{{rol.name}}">{{ rol.name }}</option>
+                                        <option v-for="rol in $page.props.roles" :key="rol.id" :value="rol.name">{{ rol.name }}</option>
                                         
                                     </select>
                                 </div>
@@ -401,11 +401,11 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <select
+                                    <select v-model="usuario.region"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="antofagasta">Antofagasta</option>
-                                        <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                        <option :value="usuario.region">-- Seleccione --</option>
+                                        <option value="Metropolitana">Metropolitana</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -421,11 +421,11 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <select
+                                    <select v-model="usuario.comuna"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="">-- Seleccione --</option>
-                                        <option value="antofagasta">Antofagasta</option>
-                                        <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                        <option :value="usuario.comuna">-- Seleccione --</option>
+                                        <option value="La Florida">La Florida</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -441,7 +441,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Dirección"
+                                    <input type="text" placeholder="Dirección" v-model="usuario.calle"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -458,7 +458,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Numero"
+                                    <input v-model="usuario.numero" type="text" placeholder="Numero"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -475,7 +475,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Block o Torre"
+                                    <input  v-model="usuario.block_torre" type="text" placeholder="Block o Torre"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -492,7 +492,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Depto, casa o local"
+                                    <input v-model="usuario.depto_casa_local"  type="text" placeholder="Depto, casa o local"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -509,7 +509,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Referencia Dirección"
+                                    <input type="text" v-model="usuario.referencia" placeholder="Referencia Dirección"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -682,7 +682,7 @@ export default {
                                     </span>
                                     <input type="password" placeholder="*Password"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                        v-model="form.password_confirmation" autocomplete="none" />
+                                         autocomplete="none" />
                                 </div>
                             </div>
 
@@ -784,6 +784,9 @@ export default {
                                         <option value="">-- Seleccione --</option>
                                         <option value="cl">Chile</option>
                                         <option value="ar">Argentina</option>
+                                        <option value="vz">Venezuela</option>
+                                        <option value="pe">Peru</option>
+                                        <option value="co">Colombia</option>
                                     </select>
                                 </div>
                             </div>
@@ -822,7 +825,7 @@ export default {
                                                 d="M5.47925 4.4834V19.417m1.9917-14.9336V19.417M21.4129 4.4834V19.417M13.4461 4.4834V19.417" />
                                         </svg>
                                     </span>
-                                    <select v-model="usuario.rol_name"
+                                    <select v-model="form.rol_name"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">-- Seleccione --</option>
                                         <option value="admin">admin</option>
@@ -843,11 +846,11 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <select
+                                    <select v-model="form.region"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">-- Seleccione --</option>
-                                        <option value="antofagasta">Antofagasta</option>
-                                        <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                        <option value="Metropolitana">Metropolitana</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -863,11 +866,11 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <select
+                                    <select v-model="form.comuna"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                         <option value="">-- Seleccione --</option>
-                                        <option value="antofagasta">Antofagasta</option>
-                                        <option value="arica_y_parinacota">Arica y Parinacota</option>
+                                        <option value="La Florida">La Florisa</option>
+                                        
                                     </select>
                                 </div>
                             </div>
@@ -883,7 +886,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Dirección"
+                                    <input v-model="form.calle" type="text" placeholder="Dirección"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -900,7 +903,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Numero"
+                                    <input v-model="form.numero" type="text" placeholder="Numero"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -917,7 +920,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Block o Torre"
+                                    <input type="text" v-model="form.block_torre"  placeholder="Block o Torre"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -934,7 +937,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Depto, casa o local"
+                                    <input type="text" placeholder="Depto, casa o local" v-model="form.depto_casa_local"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -951,7 +954,7 @@ export default {
                                                 clip-rule="evenodd" />
                                         </svg>
                                     </span>
-                                    <input type="text" placeholder="Referencia Dirección"
+                                    <input v-model="form.referencia" type="text" placeholder="Referencia Dirección"
                                         class="rounded-none rounded-e-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                             </div>
@@ -1000,10 +1003,15 @@ const form = useForm({
     fechaNacimiento: '',
     nacionalidad: '',
     password: '',
-    password_confirmation: '',
     profesion: '',
-    rol_name:''
-
+    rol_name:'',
+    comuna:'',
+    region:'',
+    calle:'',
+    numero: '',
+    depto_casa_local:'',
+    block_torre:'',
+    referencia:'',
 });
 const page = usePage();
 const filter = ref("");
@@ -1031,7 +1039,7 @@ const openCreate = () => {
     mostrarCrear.value = !mostrarCrear.value;
 }
 const crear = async (form) => {
-    console.table(form);
+  
     const formdata = new FormData();
     formdata.append('id', usuario.id);
     formdata.append('telefono', usuario.telefono);
@@ -1040,8 +1048,23 @@ const crear = async (form) => {
     formdata.append('name', usuario.name);
     formdata.append('nacionalidad', usuario.nacionalidad);
     formdata.append('profesion', usuario.profesion);
+    formdata.append('email', usuario.email);
+    formdata.append('fechaNacimiento', usuario.fechaNacimiento);
+    formdata.append('estadoCivil', usuario.estadoCivil);
+    formdata.append('sexo', usuario.sexo);
+    formdata.append('region', usuario.region);
+    formdata.append('comuna', usuario.comuna);
+    formdata.append('calle', usuario.calle);
+    formdata.append('numero', usuario.numero);
+    formdata.append('block_torre', usuario.block_torre);
+    formdata.append('depto_casa_local', usuario.depto_casa_local);
+    formdata.append('referencia', usuario.referencia);
 
-    //const res = await axios.post('/api/update-user', (formdata));
+    const res = await axios.post('/api/create-user', (formdata));
+    if(res.data.res){
+        alert('usuario creado con exito');
+        openCreate();
+    }
 }
 const guardar = async (usuario) => {
     const formdata = new FormData();
@@ -1052,15 +1075,50 @@ const guardar = async (usuario) => {
     formdata.append('name', usuario.name);
     formdata.append('nacionalidad', usuario.nacionalidad);
     formdata.append('profesion', usuario.profesion);
+    formdata.append('email', usuario.email);
+    formdata.append('fechaNacimiento', usuario.fechaNacimiento);
+    formdata.append('estadoCivil', usuario.estadoCivil);
+    formdata.append('sexo', usuario.sexo);
+    formdata.append('region', usuario.region);
+    formdata.append('comuna', usuario.comuna);
+    formdata.append('calle', usuario.calle);
+    formdata.append('numero', usuario.numero);
+    formdata.append('block_torre', usuario.block_torre);
+    formdata.append('depto_casa_local', usuario.depto_casa_local);
+    formdata.append('referencia', usuario.referencia);
     const res = await axios.post('/api/update-user', (formdata));
-    console.log(res);
+    if(res.data.res){
+        alert('usuario editado con exito');
+        window.location.reload();
+        mostrarModal();
+    }
 }
-const eliminar = (user) => {
-    confirm('Seguro desea eliminar al usuario  '+user.name);
-    //console.table(user);
+const eliminar = async (user) => {
+    const conf = confirm('Seguro desea eliminar al usuario  '+user.name);
+    if(conf){
+        const res = await axios.post('api/delete-user',(user));
+        if(res.data.res){
+            alert('usuario eliminado con exito');
+        }
+    }
 }
+const formatRut = (rut) => {
+  // Eliminar puntos, guiones y espacios
+  const cleanedRut = rut.replace(/[^0-9kK]/g, '').toUpperCase();
+
+  // Separar el dígito verificador
+  const cuerpo = cleanedRut.slice(0, -1);
+  const verificador = cleanedRut.slice(-1);
+
+  // Formatear con puntos y guión
+  const formattedCuerpo = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  return `${formattedCuerpo}-${verificador}`;
+};
+
 const editar = (user) => {
     mostrarModal()
+    user.rut = formatRut(user.rut)
     usuario.value = user;
     //console.table(user);
 }

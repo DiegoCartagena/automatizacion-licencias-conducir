@@ -41,7 +41,7 @@
   
   <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
-  import { ref } from 'vue';
+  import { ref, onMounted} from 'vue';
   
   // Datos simulados de la hora seleccionada (esto puede venir de Inertia o Vuex)
   const fechaSeleccionada = ref('2024-12-15');
@@ -53,6 +53,13 @@
     // Redirigir al inicio o mostrar alguna otra pantalla
     // window.location.href = '/inicio';
   };
+  onMounted( async()=>{
+    const id = localStorage.getItem('id_solicitud');
+   const step = await axios.post('/api/edit-solicitud',{id:id,step:'Proceso Finalizado'});
+    if(step.data.res){
+      console.log(step.data.solicitud);
+    }
+})
   </script>
   
   <style>

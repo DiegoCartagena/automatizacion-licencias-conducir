@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+   <AppLayout>
       <div class="min-h-screen bg-gray-800 text-white">
         <!-- Encabezado -->
         <header class="bg-gray-900 py-4 px-8 flex justify-between items-center">
@@ -25,9 +25,9 @@
               <td class="p-2">
                 <span
                   :class="{
-                    'text-yellow-300': doc.estado === 'Pendiente',
+                    'text-yellow-300': doc.estado === 'pendiente',
                     'text-blue-300': doc.estado === 'En Proceso',
-                    'text-green-500': doc.estado === 'Completado',
+                    'text-green-500': doc.estado === 'enviado',
                   }"
                 >
                   {{ doc.estado }}
@@ -45,9 +45,9 @@
                   <button
                     @click="triggerFileInput(index)"
                     class="bg-green-500 text-black py-1 px-4 rounded hover:bg-green-600"
-                    :disabled="doc.estado === 'Completado'"
+                    :disabled="doc.estado === 'enviado'"
                   >
-                    {{ doc.estado === 'Completado' ? 'Cargado' : 'Cargar' }}
+                    {{ doc.estado === 'enviado' ? 'Cargado' : 'Cargar' }}
                   </button>
                 </div>
               </td>
@@ -68,14 +68,16 @@
   
   <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
-  import { ref } from 'vue';
+  import { ref,  onMounted } from 'vue';
 
   import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
   
   // Archivos iniciales recibidos desde Inertia
   const { props } = usePage();
- 
-  const files = props.files; // Array inicial de archivos con {id, nombre}
+ const page = usePage();
+ const solicitud = ref({});
+ const id =ref(0);
+  const files = props.files; // Array inicial de archivos con {id, nombre, estado,url.b64,tipo}
 
   // Simula la acción de seleccionar un archivo
 const triggerFileInput = (index) => {
@@ -84,12 +86,32 @@ const triggerFileInput = (index) => {
 };
 
 // Manejar la carga de un archivo
-const handleFileUpload = (event, index) => {
+const handleFileUpload = async(event, index) => {
     const file = event.target.files[0];
-    console.log(files);
+    console.log(file);
   if (file) {
-    files[index].archivo = file;
-    files[index].estado = 'En Proceso';
+    // Crear un objeto FormData para enviar el archivo al backend
+    const formData = new FormData();
+    formData.append('archivo', file); // Archivo cargado
+    formData.append('estado', files[index].estado); // Otros atributos necesarios
+    formData.append('id_solicitud', id.value);
+    formData.append('usuario_actualizacion', page.props.auth.user.id);
+    formData.append('usuario_creacion', page.props.auth.user.id);
+    formData.append('nombre', files[index].Nombre);
+    formData.append('tipo', file.name.split('.').pop().toLowerCase());
+    try {
+      // Enviar la solicitud al backend
+      const response = await axios.post('/api/create-documento', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }, // Importante para enviar archivos
+      });
+
+      // Actualizar el estado del archivo después de la respuesta del backend
+      files[index].estado = 'En Proceso';
+      console.log('Archivo enviado exitosamente:', response.data);
+    } catch (error) {
+      console.error('Error al enviar el archivo:', error);
+      files[index].estado = 'Error al enviar';
+    }
   }
 };
 
@@ -109,19 +131,30 @@ const submitFiles = async () => {
     // Actualizar estados a "Completado"
     files.forEach((doc) => {
       if (doc.archivo) {
-        doc.estado = 'Completado';
+        doc.estado = 'enviado';
       }
     });
-
+ 
     alert('Documentos enviados correctamente ahora seras redirigido a el proceso de pago del tramite');
-    const response = await axios.post('api/start_pago'
-    );
+    id.value = localStorage.getItem('id_solicitud');
+    const res = await axios.post('/api/edit-solicitud',{id:id,step:'Pago'});
+    console.log(solicitud.value);
+   const response = await axios.post('api/start_pago',{id_solicitud:id,solicitud:solicitud.value});
+    console.log(response);
     window.location.href= response.data ;
   } catch (error) {
     console.error('Error al cargar los documentos:', error);
     alert('No se pudo cargar los documentos. Intenta de nuevo.');
   }
 };
+onMounted( async()=>{
+     id.value = localStorage.getItem('id_solicitud');
+   const step = await axios.post('/api/edit-solicitud',{id:id.value,step:'Carga documentos'});
+    if(step.data.res){
+     solicitud.value= step.data.solicitud;
+     
+    }
+})
 </script>
 
 <style>

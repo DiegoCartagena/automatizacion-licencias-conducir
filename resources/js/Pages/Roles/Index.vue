@@ -40,18 +40,18 @@
         <tbody>
             <template  v-for="role in $page.props.datos.data" :key="role.id">
 
-                <tr @click="openEditar(role)"class="bg-white border-gray-2 hover:bg-gray-200 text-center ">
+                <tr class="bg-white border-gray-2 hover:bg-gray-200 text-center ">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{role.id }}
                     </th>
-                    <td class="px-6 py-4">
+                    <td @click="openEditar(role)" class="px-6 py-4">
                         {{role.name}}
                     </td>
-                    <td class="px-6 py-4">
+                    <td @click="openEditar(role)" class="px-6 py-4">
                         {{role.guard_name}}
                     </td>
                     <td class="text-center" >
-                    <Button class="bg-red-400 rounded w-1/3  " >
+                    <Button class="bg-red-400 rounded w-1/3  " @click="eliminar(role)" >
                         <svg class="w-[24px] h-[24px] text-gray-800 dark:text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path  stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"/>
                         </svg>
@@ -215,11 +215,15 @@ const openCreate = () => {
 const mostrarModal = () =>{
     mostrar.value=!mostrar.value;
 }
-const crear = (form) =>{
-    console.log(form);
+const crear = async(form) =>{
+const res = await axios.post('api/create-rol',(form));
+openCreate();
 }
 const openEditar= (role) => {
     mostrarModal();
     rol.value=role;
+}
+const eliminar = async (rol) =>{
+    const res = await axios.post('api/delete-rol',(rol))
 }
 </script>

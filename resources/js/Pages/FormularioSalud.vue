@@ -6,7 +6,7 @@
                 <div class="text-xl font-bold text-yellow-300">
                     Formulario de Declaración de Salud
                     <br>
-                    <p class="text-xl font-smile italic text-red-600">Se solicita que responda las siguientes preguntas
+                    <p class="text-xl font-smile  text-red-500">Se solicita que responda las siguientes preguntas
                         referidas a su estado de salud. Sus respuestas serán tratadas en forma confidencial, de manera
                         que puede contestar con sinceridad.
                         Si usted presenta problemas de salud, ello no es causa para impedir la obtención o renovación de
@@ -19,18 +19,18 @@
             </header>
 
             <!-- Contenedor del formulario -->
-            <main class="max-w-5xl mx-auto py-6 bg-gray-700 p-6 rounded-lg">
+            <main class="max-w-7xl mx-auto py-6 bg-gray-700 p-6 rounded-lg">
                 <h2 class="text-lg font-semibold mb-4">Complete el siguiente formulario</h2>
 
                 <form @submit.prevent="handleSubmit" class="space-y-6">
                     <!-- Declaración -->
                     <fieldset class="border border-gray-600 p-4 rounded-lg">
                         <legend class="text-yellow-300">Declaración</legend>
-                        <p class="text-sm mb-4">
-                            Yo, <input v-model="formData.nombre" type="text" placeholder="Nombre completo"
-                                class="bg-gray-800 text-white p-2 rounded w-64" required />,
+                        <p class="text-base mb-4">
+                            Yo,   <input v-model="formData.nombre" type="text" placeholder="Nombre completo"
+                                class="bg-gray-800 ml-2 mr-2 text-base text-white p-2 rounded w-64" required />,
                             RUN N° <input v-model="formData.run" type="text" placeholder="12345678-9"
-                                class="bg-gray-800 text-white p-2 rounded w-32" required />, estoy en conocimiento de
+                                class="bg-gray-800 text-base text-black p-2 rounded w-32 ml-2 mr-2" required />,  estoy en conocimiento de
                             que mi estado de salud puede incidir, en favor o en detrimento, de la seguridad vial, al
                             momento de conducir un vehículo. Por ello declaro no faltar a la verdad ni ocultar
                             información con respecto a la existencia, actual o pasada, de enfermedades físicas,
@@ -450,7 +450,7 @@
 
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 // Datos iniciales del formulario
 const formData = ref({
@@ -523,4 +523,12 @@ const validateForm = () => {
         formData.value.estatura
     );
 };
+onMounted( async()=>{
+    const id = localStorage.getItem('id_solicitud');
+   const step = await axios.post('/api/edit-solicitud',{id:id,step:'formulario de salud'});
+    if(step.data.res){
+        page.props.solicitud=step.data.solicitud;
+        console.log(page.props);
+    }
+})
 </script>

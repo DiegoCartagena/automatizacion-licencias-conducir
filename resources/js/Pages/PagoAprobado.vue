@@ -46,10 +46,10 @@
   
   <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue';
-  import { ref, computed } from 'vue';
+  import { ref, computed, onMounted} from 'vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
   
-  // Obtener los datos del pago desde Inertia
+  // Obtener los datos del pago desde Inertias
   const { props } = usePage();
   const pago = props.pago || { id: 0, monto: 0, fecha: '', estado: '', razon: '' };
   const estadoPago = pago.status;
@@ -66,6 +66,17 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
       // Inertia.visit('/ruta-inicio');
     }
   };
+  onMounted( async()=>{
+    const id = localStorage.getItem('id_solicitud');
+    if(estadoPago==2){
+        const step = await axios.post('/api/edit-solicitud',{id:id,step:'Pago Aprobado'});
+    }else{
+        const step = await axios.post('/api/edit-solicitud',{id:id,step:'Pago Rechazado'});
+    }
+    if(step.data.res){
+      console.log(step.data.solicitud);
+    }
+});
   </script>
   
   <style>

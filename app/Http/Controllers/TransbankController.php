@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Documentos;
 use Illuminate\Http\Request;
 use App\Models\Pagos;
+use App\Models\solicitudes;
+use App\Models\SolicitudHasDocumentos;
+use App\Models\TipoTramite;
 use Transbank\Webpay\WebpayPlus;
 Use Transbank\Webpay\WebpayPlus\Transaction;
 use Inertia\Inertia;
@@ -36,12 +40,14 @@ class TransbankController extends Controller
      */
     public function crear_compra(Request $request)
     {
-      
+       
         try {
+            $solicitud = $request->solicitud;
+            $tramite = TipoTramite::where('id',$solicitud['id_tipo_tramite'])->first();
             $nuevo_pago = new Pagos();
             $nuevo_pago->session_id='123457';
-            $nuevo_pago->total = 66450;
-            $nuevo_pago->solicitud_id="1";
+            $nuevo_pago->total = $tramite->precio;
+            $nuevo_pago->solicitud_id=$solicitud['id'];
             $nuevo_pago->save();
             $url_pago = self::init_transaction($nuevo_pago);
             
@@ -93,9 +99,11 @@ class TransbankController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+
+        
+        
     }
 
     /**

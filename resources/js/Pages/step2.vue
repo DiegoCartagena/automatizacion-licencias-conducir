@@ -63,11 +63,12 @@
           <p class="text-lg font-bold">Trámites con licencia <span class="text-yellow-500">en la comuna</span></p>
         
           <!-- Botón 1 -->
-          <button @click="mostrarModal" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center">Renovación de Licencia / Ampliación de Clase</button>
+          <input @click="mostrarModal(tipo_tramite.renovacion)"  type="button" value="Renovación de Licencia" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center" v-model="tipo_tramite.renovacion"></input>
           <!-- Botón 2 -->
-          <button @click="step3" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center">Duplicados</button>
+          <input type="button" @click="mostrarModal(tipo_tramite.amplicacion)" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center" v-model="tipo_tramite.amplicacion" value="Ampliación de clase" ></input>
           <!-- Botón 3 -->
-          <button @click="redirectTo" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center">Preguntas frecuentes</button>
+          <input type="button"  @click="mostrarModal(tipo_tramite.duplicados)" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center" v-model="tipo_tramite.duplicados" value="Duplicados" ></input>
+          <input type="button" @click="redirectTo" class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center" value="Preguntas Frecuentes" ></input>
           <!-- Botón 4 
           <button class="bg-blue-700 hover:bg-blue-800 rounded-lg p-4 w-full text-center">Agenda Hora Mascotas</button>
           
@@ -126,7 +127,7 @@
 
       <!-- Botones de acción -->
       <div class="flex justify-center space-x-4">
-        <button @click="step3" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded flex-1">Aceptar Condiciones</button>
+        <button @click="step3(form)" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded flex-1" >Aceptar Condiciones</button>
         <button @click="mostrarModal" class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded flex-1">Cancelar</button>
       </div>
     </div>
@@ -136,20 +137,50 @@
   </template>
   
   <script setup>
-import { ref, computed} from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { ref, computed, onMounted} from 'vue';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
   import AppLayout from '@/Layouts/AppLayout.vue';
-  const mostrar = ref(false);
+import axios from 'axios';
 
-  const mostrarModal=()=>{
+
+  const mostrar = ref(false);
+  const page = usePage();
+  const form = ref('');
+  const { props } = usePage();
+  
+  const tipo_tramite = useForm({
+    renovacion : 'Renovación de licencia',
+    amplicacion : 'Ampliación de clase',
+    duplicados : 'Duplicados'
+  });
+  const mostrarModal=(tipo)=>{
     mostrar.value = !mostrar.value;
+   form.value=tipo;
   }
   const redirectTo=()=>{
     window.location.href=('https://www.laflorida.cl/sitio/licencias-de-conducir-preguntas-frecuentes/');
   }
-  const step3 = () =>{
-    //crear solicitud -> con datos del usuario y tipo de tramite 
-      window.location.href = ('/Calendar');
+
+
+  const step3 = async (form) =>{
+    //crear solicitud -> con datos del usuario y tipo de tramite
+    console.log(form);
+    let usuario = page.props.usuario; 
+    let data = useForm({
+      tipo : form,
+      usuario : usuario,
+
+    });
+    const res = await axios.post('/api/create-solicitud',data);
+    if(res.data.res){
+      localStorage.setItem('id_solicitud',res.data.data.id);
+      var conf  = confirm('solicitud creada con exito se rediregira a la siguiente pagina')
+      if(conf){
+        window.location.href = ('/Calendar');
+      }
+    }else{
+      alert('Ocurrio un error intenta nuevamente mas tarde');
+    }
   }
 
   const formatDate=(fecha)=>{
@@ -162,6 +193,13 @@ import { Head, Link, router } from '@inertiajs/vue3';
     }).replace('.', ''); 
   });
   }
+  onMounted( async () => {
+    const tipo_tramite = useForm({
+    renovacion : 'Renovación de licencia',
+    amplicacion : 'Ampliación de clase',
+    duplicados : 'Duplicados'
+  });
+  });
   </script>
   
   <style scoped>

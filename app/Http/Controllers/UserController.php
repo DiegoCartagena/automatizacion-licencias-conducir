@@ -216,7 +216,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
-
+            
         try {
             $user = User::find($request->id);
             if ($user) {
