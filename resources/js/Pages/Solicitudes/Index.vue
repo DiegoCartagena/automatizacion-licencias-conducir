@@ -230,6 +230,9 @@ export default {
         </div>
         
       </div>
+      <button v-if="todosDocumentosAprobados() " @click="confirmarcita(sol)" class="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
+                Confirmar cita
+    </button>
     </div>
 
     <!-- Sección Solicitud -->
@@ -268,9 +271,131 @@ export default {
         </div>
       </div>
     </div>
-
-    <!-- Secciones Adicionales (Otro, Otro) -->
-    <div v-for="(seccion, key) in ['Resultado examenes', 'Licencias']" :key="key" class="mb-4">
+<!--examenes-->
+    <div class="mb-4">
+      <button
+        @click="toggleSection('examenes')"
+        class="w-full text-left bg-gray-300 p-3 rounded-lg hover:bg-gray-600"
+      >
+        Resultado Examenes
+      </button>
+      <div v-if="sections.examenes && !esObjetoValido(sol.examenes)" class="mt-2 space-y-3" >
+        <!--agregar mas examenes-->
+        <div class="grid grid-cols-1 gap-4">
+                            <table class="table-auto w-full border border-gray-300">
+                                <thead class="bg-gray-800 text-white">
+                                    <tr class="text-center">
+                                        <th class="p-2">Nombre Examen</th>
+                                        <th class="p-2">Estado</th>
+                                        <th class="p-2">Porcentaje</th>
+                                        <th class="p-2">Puntaje</th>
+                                        <th class="p-2">Agregar</th>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(examen, index) in examenes" :key="index" class="text-center">
+                                        <td><input v-model="examen.nombre_examen" type="text" placeholder="Examen practico"
+                                                class="bg-gray-200 p-2 w-full rounded" /></td>
+                                        <td><input v-model="examen.estado" type="text" placeholder="Aprobado o Rechazado"
+                                                class="bg-gray-200 p-2 w-full rounded" /></td>
+                                        <td><input v-model="examen.porcentaje" type="text" placeholder="0-100"
+                                                class="bg-gray-200 p-2 w-full rounded" /></td>
+                                        <td><input v-model="examen.puntaje" type="text" placeholder="1000"
+                                            class="bg-gray-200 p-2 w-full rounded" /></td>
+                                        <td>
+                                            <button v-if="index === examenes.length - 1" @click="agregarExamen(sol.id,examen)"
+                                                class="text-green-500 hover:text-green-700 font-bold text-3xl">
+                                                +
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+      </div>
+      <div v-if="sections.examenes && esObjetoValido(sol.examenes)" class="mt-2 space-y-3" >
+        
+          <table class="table-auto w-full border border-gray-300">
+                                  <thead class="bg-gray-300 text-white">
+                                      <tr class=" text-black text-center">
+                                          <th class="p-2">Nombre Examen</th>
+                                          <th class="p-2">Estado</th>
+                                          <th class="p-2">Porcentaje</th>
+                                          <th class="p-2">Puntaje</th>
+                                          <th class="p-2">Agregar</th>
+                                          
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr v-for="(examen, index) in sol.examenes" :key="index" class="text-center">
+                                          <td><input v-model="examen.nombre_examen" type="text" placeholder="Examen practico"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examen.estado" type="text" placeholder="Aprobado, Rechazado"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examen.porcentaje" type="text" placeholder="0-100"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examen.puntaje" type="text" placeholder="100"
+                                              class="bg-gray-200 p-2 w-full rounded" /></td>
+                                      </tr>
+                                      <tr class="text-center">
+                                        <td><input v-model="examenes.nombre_examen" type="text" placeholder="Examen practico"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examenes.estado" type="text" placeholder="Aprobado, Rechazado"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examenes.porcentaje" type="text" placeholder="0-100"
+                                                  class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td><input v-model="examenes.puntaje" type="text" placeholder="100"
+                                              class="bg-gray-200 p-2 w-full rounded" /></td>
+                                          <td>
+                                              <button  @click="agregarExamensol(sol.id,examenes)"
+                                                  class="text-green-500 hover:text-green-700 font-bold text-3xl">
+                                                  +
+                                              </button>
+                                          </td>
+                                      </tr>
+                                  </tbody>
+          </table>
+    
+    </div>
+    </div>
+    <!--seccion Licencias-->
+    <div class="mb-4">
+      <button
+        @click="toggleSection('licencias')"
+        class="w-full text-left bg-gray-300 p-3 rounded-lg hover:bg-gray-600"
+      >
+        Licencias {{ sol.licencia }}
+      </button>
+    
+    <div v-if="sections.licencias" class="mt-2 space-y-3" v-for="licencia in sol.licencias" :key="licencia.id">
+        <hr>
+        <div>
+          <label class="block text-sm font-medium">Usuario</label>
+          <input type="text" v-model="sol.usuario_creacion.name"  class="form-input w-full bg-gray-200 text-black rounded-lg p-2" />
+        </div>
+        
+        <div>
+          <label class="block text-sm font-medium">Tipo:</label>
+          <input type="text" v-model="licencia.tipo" class="form-input w-full bg-gray-200 text-black rounded-lg p-2" />
+        </div>
+        <div  >
+          <label class="block text-sm font-medium">Folio</label>
+          <input type="text" v-model="licencia.folio"  class="form-input w-full bg-gray-200 text-black rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Observaciones</label>
+          <input type="text" v-model="licencia.observaciones"  class="form-input w-full bg-gray-200 text-black rounded-lg p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">Estado</label>
+          <input type="text" v-model="licencia.estado"  class="form-input w-full bg-gray-200 text-black rounded-lg p-2" />
+        </div>
+        
+      </div>
+      </div>
+    <!-- Secciones Adicionales (Otro, Otro) 
+    <div v-for="(seccion, key) in [ 'Licencias']" :key="key" class="mb-4">
       <button
         @click="toggleSection(key)"
         class="w-full text-left bg-gray-300 p-3 rounded-lg hover:bg-gray-600"
@@ -280,17 +405,17 @@ export default {
       <div v-if="sections[key]" class="mt-2 space-y-3">
         <p>Contenido editable para {{ seccion }}.</p>
       </div>
-    </div>
-    <button @click="confirmarcita(sol)" class="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
-                Confirmar cita
+    </div-->
+    
+    <button v-if="sol.examenes.every((examen) => examen.estado === 'aprobado') " @click="emitirLicencia(sol)" class="bg-green-500 text-white py-1 px-3 rounded hover:bg-green-600">
+                Aprobar Solicitud
     </button>
   </div>
   </div>
-  
 </template>
         <!--Modal Crear-->
         <template v-if="mostrarCrear">
-            <<div class="fixed inset-0  flex items-center justify-center bg-gray-900 bg-opacity-50 ">
+            <div class="fixed inset-0  flex items-center justify-center bg-gray-900 bg-opacity-50 ">
                 <div class="bg-white rounded-xl p-6 max-w-2xl w-full  shadow-2xl max-h-[800px] overflow-y-auto">
                     <!-- Título del modal -->
                     <h4>Crear Solicitud</h4> <span>
@@ -708,7 +833,9 @@ export default {
                 </div>
             </div>
         </template>
-
+        <template v-if="licenciaEmitida">
+            <Licencia></Licencia>
+        </template>
     </AppLayout>
 </template>
 <script setup>
@@ -716,11 +843,14 @@ import AppLayout from '@/Layouts/AppLayout.vue';
 import { ref, computed, onMounted } from 'vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
+import Licencia from '../Licencia.vue';
+
 const mostrar = ref(false);
 const mostrarCrear = ref(false);
 const sol = ref({});
 const page = usePage();
 const documentos = ref({});
+const licenciaEmitida = ref(false);
 const form = useForm({
     rut: '',
     name: '',
@@ -734,9 +864,33 @@ const form = useForm({
     nacionalidad: '',
     password: '',
     password_confirmation: '',
-    profesion: ''
-
+    profesion: '',
+    examenes : {
+        nombre_examen:'',
+        porcentaje:'',
+        puntaje:'',
+        estado:'',
+        fecha_realizacion:''
+    }
 });
+
+const examenes = ref([
+    { nombre_examen: '', estado: '', porcentaje: '', puntaje:'' }, // Primera fila por defecto
+]);
+const agregarExamen = async(id,examen) => {
+    sol.value.examenes.push({nombre_examen:examen.nombre_examen, estado:examen.estado, puntaje:examen.puntaje, porcentaje:examen.porcentaje});
+    const res = await axios.post('api/create-resultado',({id_solicitud:id,nombre_examen:examen.nombre_examen, estado:examen.estado, puntaje:examen.puntaje, porcentaje:examen.porcentaje}));
+};
+const agregarExamensol =async (id,examen) => {
+    sol.value.examenes.push({nombre_examen:examen.nombre_examen, estado:examen.estado, puntaje:examen.puntaje, porcentaje:examen.porcentaje});
+    const res = await axios.post('api/create-resultado',({id_solicitud:id,nombre_examen:examen.nombre_examen, estado:examen.estado, puntaje:examen.puntaje, porcentaje:examen.porcentaje}));
+    console.log(res.data);
+};
+const emitirLicencia = (sol) =>{
+    console.log(sol);
+    licenciaEmitida.value=!licenciaEmitida.value;
+    alert('se emitira la licencia para su impresion y se avisara al solicitante que su licencia esta lista para retiro');
+}
 const formatBorn = (inputDate) => {
   let date;
 
@@ -752,9 +906,13 @@ const formatBorn = (inputDate) => {
 
   return `${day}/${month}/${year}`;
 };
+const todosDocumentosAprobados = () => {
+  return documentos.value.every((doc) => doc.estado === "aprobado");
+};
+
 const confirmarcita = async (sol) =>{
-    console.log(sol);
-const correo = await axios.get('/api/send-mail');
+
+const correo = await axios.post('/api/send-mail',(sol));
 alert(correo.data.message);
 }
 const formatDate = (isoString) => {
@@ -820,10 +978,11 @@ const guardar = async (solicitud) => {
 }
 const editar = async (solicitud) => {
     mostrarModal()
-    const res = await axios.post('/api/find-documento',({id_solicitud:solicitud.id, solicitud:solicitud}));
+    const res = await axios.post('api/find-documento',({id_solicitud:solicitud.id, solicitud:solicitud}));
     documentos.value=res.data.documentos;
     solicitud.usuario_creacion.fechaNacimiento = formatBorn(solicitud.usuario_creacion.fechaNacimiento)
     solicitud.created_at=formatDate(solicitud.created_at);
+    solicitud.fecha_agendada = formatDate(solicitud.fecha_agendada);
     solicitud.usuario_creacion.rut = formatRut(solicitud.usuario_creacion.rut);
     sol.value = solicitud;
 
@@ -846,8 +1005,8 @@ const sections = ref({
   personal: false,
   documentos: false,
   solicitud: false,
-  Examenes: false,
-  Otro2: false,
+  examenes: false,
+  licencias: false,
 });
 
 // Datos del formulario
@@ -875,6 +1034,9 @@ const aprobarDocumento = async(index) => {
 const rechazarDocumento = async(index) => {
   documentos.value[index].estado = 'rechazado';
   const res = await axios.post('/api/editar-documento',(documentos.value[index]));
+};
+const esObjetoValido = (obj) => {
+  return obj && typeof obj === 'object' && Object.keys(obj).length > 0;
 };
 onMounted( ()=>{
     const sol = page.props.solicitudes.filter((solicitud) =>

@@ -61,8 +61,14 @@ class HandleInertiaRequests extends Middleware
                     
                 ),
                 array(
-                    'id'=>1,
+                    'id'=>4,
                     'Nombre'=>'Certificado residencia',
+                    'estado' => 'Pendiente',
+                    
+                ),
+                array(
+                    'id'=>5,
+                    'Nombre'=>'Hoja de vida del conductor',
                     'estado' => 'Pendiente',
                     
                 )

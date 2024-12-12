@@ -58,14 +58,16 @@ const submit = () => {
             
         </form>
 
-        <div class="links">
-          <p>¿Aún no estás registrado? <a href="/register">Regístrate aquí</a></p>
-          <p>¿Olvidaste tu contraseña? <Link v-if="canResetPassword" :href="route('password.request')">
+        <div class="ml-20 items-center links">
+          
+            <p class="bg-green-500 h-[60px] w-[400px] justify-center text-center">¿Aún no estás registrado? <a href="/register">Regístrate aquí</a></p>
+          
+          <p class="bg-blue-500 h-[60px] w-[400px] mt-2" >¿Olvidaste tu contraseña? <Link v-if="canResetPassword" :href="route('password.request')">
             Haz click aquí
                 </Link></p>
         </div>
-        <div class="support">
-          <p>¿Aún tienes problemas con tu registro u otro sistema? Envía un correo a <a href="mailto:registro@laflorida.cl">registro@laflorida.cl</a></p>
+        <div class="ml-20 support">
+          <p class="bg-red-500 h-[60px] w-[400px] mt-2" >¿Aún tienes problemas con tu registro u otro sistema? Envía un correo a <a href="mailto:registro@laflorida.cl">registro@laflorida.cl</a></p>
         </div>
       </div>
     </div>
@@ -89,6 +91,7 @@ const submit = () => {
   background-image: url('/path-to-background-image.png'); /* Ruta a la imagen de fondo */
   background-size: cover;
   background-position: center;
+  
 }
 
 .login-card {
@@ -96,7 +99,8 @@ const submit = () => {
   padding: 20px 30px;
   border-radius: 8px;
   width: 100%;
-  max-width: 100vh;
+  max-width: 80vh;
+  
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   color: white;
@@ -153,6 +157,7 @@ const submit = () => {
 .links, .support {
   margin-top: 15px;
   font-size: 0.9rem;
+  justify-content: center;
 }
 
 .links p, .support p {
@@ -160,13 +165,14 @@ const submit = () => {
 }
 
 .links a {
-  color: #5cdb5c;
+  color: white;
   text-decoration: none;
 }
 
 .support a {
-  color: #e74c3c;
+  color: white;
   text-decoration: none;
+
 }
 .aut{
     background-color: #2a3b47;

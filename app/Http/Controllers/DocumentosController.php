@@ -116,7 +116,7 @@ class DocumentosController extends Controller
             $documento = Documentos::where('id',$request->id)->first();
             $documento->nombre = isset($request->nombre) ? $request->nombre : $documento->nombre ; 
             $documento->usuario_actualizacion = isset($request->usuario_actualizacion) ? $request->usuario_actualizacion : $documento->usuario_actualizacion; 
-            $documento->b64 = isset($request->b64) ? $request->b64 : $documento->b64 ;
+           
             $documento->tipo = isset($request->tipo)? $request->tipo : $documento->tipo;
             $documento->estado = isset($request->estado)? $request->estado : $documento->estado;
             $documento->save();

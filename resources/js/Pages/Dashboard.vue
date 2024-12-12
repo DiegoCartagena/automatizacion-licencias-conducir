@@ -38,8 +38,8 @@ const logout = () => {
                         <p class="text-center text-lg font-semibold">{{$page.props.auth.user.name.toUpperCase()}}</p>
                         <p class="text-center text-sm text-yellow-500">{{$page.props.user.roles[0].toUpperCase()}}</p>
                         <ul class="mt-4 space-y-2 text-sm">
-                            <li><a href="/user/profile" class="hover:text-gray-300">Datos personales</a></li>
-                            <li><a href="/user/profile" class="hover:text-gray-300">Cambiar Contraseña</a></li>
+                            <li><a href="user/profile" class="hover:text-gray-300">Datos personales</a></li>
+                            <li><a href="user/profile" class="hover:text-gray-300">Cambiar Contraseña</a></li>
                             <li><a href="#" @click="logout" class="hover:text-gray-300">Cerrar Sesión</a></li>
                         </ul>
                     </div>
@@ -63,7 +63,7 @@ const logout = () => {
                         </a>
 
                         <!-- Trámite 2 -->
-                        <a href="/solicitudes" v-if="$page.props.user.roles == 'admin'">
+                        <a href="solicitudes" v-if="$page.props.user.roles == 'admin'">
                             <div
                                 class="bg-green-500 scale-75 hover:bg-green-500 hover:scale-100 rounded-lg p-4 flex flex-col items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mb-3 text-white" fill="none"
@@ -87,7 +87,7 @@ const logout = () => {
                         </a>
 
                         <!-- Trámite 3 -->
-                        <a :href="'/step2/'+$page.props.auth.user.id ">
+                        <a :href="'step2/'+$page.props.auth.user.id ">
 
                             <div
                                 class="bg-green-700 scale-75 hover:bg-green-800 hover:scale-100 rounded-lg p-4 flex flex-col items-center">
@@ -101,7 +101,7 @@ const logout = () => {
                         </a>
 
                         <!-- Trámite 4 -->
-                        <a href="/roles" v-if="$page.props.user.roles == 'admin'">
+                        <a href="roles" v-if="$page.props.user.roles == 'admin'">
 
                             <div
                                 class="bg-green-700 scale-75 hover:scale-100 hover:bg-green-800 rounded-lg p-4 flex flex-col items-center">

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Documentos;
+use App\Models\Licencias;
 use App\Models\solicitudes;
 use App\Models\User;
 use App\Models\TipoTramite;
 use App\Models\Pagos;
+use App\Models\ResExamenes;
 use App\Models\Solicitud;
 use App\Models\SolicitudHasDocumentos;
 use Illuminate\Http\Request;
@@ -27,7 +29,9 @@ class SolicitudesController extends Controller
                 $pagos->status =( $pagos->status==2 ) ? 'Aprobado' : (($pagos->status==3) ? 'Rechazado' : 'Pendiente') ;
                 $solicitud->pagos=$pagos;
             }
-            
+            $solicitud->licencias = Licencias::where('id_usuario',$solicitud->usuario_creacion->id)->get();
+            $examenes = ResExamenes::where('id_solicitud',$solicitud->id)->get();
+            $solicitud->examenes = $examenes;
             $solicitud->usuario_actualizacion = User::where('id',$solicitud->usuario_actualizacion)->first();
             $documentos = SolicitudHasDocumentos::where('id_solicitud',$solicitud->id)->get(); 
             if($documentos){
@@ -52,9 +56,17 @@ class SolicitudesController extends Controller
         foreach ($solicitudes as $key => $solicitud) {
             # code...
             $solicitud->usuario_creacion = User::where('id',$solicitud->id_usuario)->first();
-            $solicitud->pagos = Pagos::where('solicitud_id',$solicitud->id)->first();
+            $pagos = Pagos::where('solicitud_id',$solicitud->id)->first();
+            if($pagos){
+                $pagos->status =( $pagos->status==2 ) ? 'Aprobado' : (($pagos->status==3) ? 'Rechazado' : 'Pendiente') ;
+                $solicitud->pagos=$pagos;
+            }
+            $solicitud->licencias = Licencias::where('id_usuario',$solicitud->usuario_creacion->id)->get();
+
             $solicitud->usuario_actualizacion = User::where('id',$solicitud->usuario_actualizacion)->first();
              $documentos = SolicitudHasDocumentos::where('id_solicitud',$solicitud->id)->get(); 
+             $examenes = ResExamenes::where('id_solicitud',$solicitud->id)->get();
+            $solicitud->examenes = $examenes;
             if($documentos){
                 foreach ($documentos as $key => $documento) {
                     $documento->doc = Documentos::where('id',$documento->id)->get();
@@ -118,6 +130,25 @@ class SolicitudesController extends Controller
                     $solicitud->$clave=$valor;
                 }
                     $res = $solicitud->save();
+                    $solicitud->usuario_creacion = User::where('id',$solicitud->id_usuario)->first();
+                    $pagos = Pagos::where('solicitud_id',$solicitud->id)->first();
+                    if($pagos){
+                        $pagos->status =( $pagos->status==2 ) ? 'Aprobado' : (($pagos->status==3) ? 'Rechazado' : 'Pendiente') ;
+                        $solicitud->pagos=$pagos;
+                    }
+                    $solicitud->licencias = Licencias::where('id_usuario',$solicitud->usuario_creacion->id)->get();
+        
+                    $solicitud->usuario_actualizacion = User::where('id',$solicitud->usuario_actualizacion)->first();
+                     $documentos = SolicitudHasDocumentos::where('id_solicitud',$solicitud->id)->get(); 
+                     $examenes = ResExamenes::where('id_solicitud',$solicitud->id)->get();
+                    $solicitud->examenes = $examenes;
+                    if($documentos){
+                        foreach ($documentos as $key => $documento) {
+                            $documento->doc = Documentos::where('id',$documento->id)->get();
+                        }   
+                        $solicitud->documentos=$documentos;
+                    }
+                    $solicitud->tipo_tramite = TipoTramite::where('id',$solicitud->id_tipo_tramite)->first();
                     return response()->json(['res'=>true,'solicitud'=>$solicitud]);
             }else{
                 return response()->json(['res'=>false,'mensaje'=>'el id de solicitud es requerido']);

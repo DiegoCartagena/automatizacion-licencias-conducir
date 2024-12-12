@@ -8,6 +8,7 @@ use App\Http\Controllers\LicenciasController;
 use App\Http\Controllers\TipoTramiteController;
 use App\Http\Controllers\DocumentosController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ResExamenesController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitudesController;
 
@@ -48,12 +49,17 @@ Route::post('/create-rol',[RoleController::class,'create']);
 Route::post('/editar-rol',[RoleController::class,'edit']);
 Route::post('/delete-rol',[RoleController::class,'destroy']);
 //mails
-Route::get('/send-mail',[EmailController::class,'sendEmail']);
+Route::post('/send-mail',[EmailController::class,'sendEmail']);
+Route::post('/pago-aprobado',[EmailController::class,'confirmarPago']);
+
 //Solicitudes
 Route::get('/get-solicitudes',[SolicitudesController::class,'listar']);
 Route::post('/create-solicitud',[SolicitudesController::class,'create']);
 Route::post('/edit-solicitud',[SolicitudesController::class,'edit']);
 Route::delete('/delete-solicitud',[SolicitudesController::class,'destroy']);
+
+//resultado examenes
+Route::post('/create-resultado',[ResExamenesController::class,'create']);
 
 //auth routes
 Route::get('/user', function (Request $request) {

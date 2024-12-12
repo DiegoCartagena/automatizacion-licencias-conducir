@@ -139,7 +139,7 @@ const submitFiles = async () => {
     id.value = localStorage.getItem('id_solicitud');
     const res = await axios.post('/api/edit-solicitud',{id:id,step:'Pago'});
     console.log(solicitud.value);
-   const response = await axios.post('api/start_pago',{id_solicitud:id,solicitud:solicitud.value});
+   const response = await axios.post('/api/start_pago',{id_solicitud:id,solicitud:solicitud.value});
     console.log(response);
     window.location.href= response.data ;
   } catch (error) {

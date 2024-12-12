@@ -27,7 +27,7 @@
             </p>
             <p class="mb-2"><strong>ID del Pago:</strong> {{ pago.id }}</p>
             <p class="mb-2"><strong>Monto:</strong> $ {{ pago.total }}</p>
-            <p class="mb-2"><strong>Fecha:</strong> {{ pago.created_at }}</p>
+            <p class="mb-2"><strong>Fecha:</strong> {{ formatDate(pago.created_at) }}</p>
             <p v-if="estadoPago === 3" class="mb-2 text-red-500">
               <strong>Razón del Rechazo:</strong> {{ pago.motivo }}
             </p>
@@ -53,7 +53,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
   const { props } = usePage();
   const pago = props.pago || { id: 0, monto: 0, fecha: '', estado: '', razon: '' };
   const estadoPago = pago.status;
-  
+  const page = usePage();
   // Acción al hacer clic en "Continuar"
   const handleNext = () => {
     if (estadoPago === 2) {
@@ -66,16 +66,25 @@ import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
       // Inertia.visit('/ruta-inicio');
     }
   };
+  const formatDate = (isoString) => {
+  const date = new Date(isoString); // Convertir la cadena ISO a un objeto Date
+  const day = String(date.getDate()).padStart(2, '0'); // Día con dos dígitos
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Mes con dos dígitos
+  const year = date.getFullYear(); // Año
+
+  return `${parseInt(day)}/${month}/${year}`;
+};
   onMounted( async()=>{
     const id = localStorage.getItem('id_solicitud');
     if(estadoPago==2){
         const step = await axios.post('/api/edit-solicitud',{id:id,step:'Pago Aprobado'});
+        page.props.solicitud=step.data.solicitud;
+        console.log(step);
+        const correo = await axios.post('/api/pago-aprobado',(page.props.solicitud));
     }else{
         const step = await axios.post('/api/edit-solicitud',{id:id,step:'Pago Rechazado'});
     }
-    if(step.data.res){
-      console.log(step.data.solicitud);
-    }
+    
 });
   </script>
   

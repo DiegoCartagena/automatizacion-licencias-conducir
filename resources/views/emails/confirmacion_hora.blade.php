@@ -62,7 +62,7 @@
             <p><strong>Hora Agendada:</strong> {{ $data['hora_agendada'] }}</p>
             <p><strong>RUT del Solicitante:</strong> {{ $data['rut'] }}</p>
         </div>
-@if($data['tipo_tramite' ]==='Renovación de Licencia de Conducir')
+@if($data['tipo_tramite' ]==='Renovación de licencia')
         <p>
             Por favor, asegúrese de presentarse el día y hora indicados con su cedula de identidad y Licencia de conducir.
         </p>

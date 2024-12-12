@@ -18,9 +18,23 @@ class ResExamenesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try {
+            //code...
+            if($request->nombre_examen){
+                $examen = array();
+                $examen['nombre_examen']=$request->nombre_examen;
+                $examen['estado'] = $request->estado;
+                $examen['puntaje'] = $request->puntaje;
+                $examen['porcentaje'] = $request->porcentaje;
+                $examen['id_solicitud'] = $request->id_solicitud;
+                $res = ResExamenes::create($examen);
+                return response()->json(['res'=>true,'Examen'=>$res]);
+            }
+        } catch (\Exception $e) {
+            var_dump("Error al almacenar el resultado");die($e);
+        }
     }
 
     /**
